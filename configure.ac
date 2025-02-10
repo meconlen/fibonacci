@@ -19,7 +19,7 @@ AC_CHECK_HEADERS([malloc/malloc.h])
 AC_LANG_PUSH([C++])
 AC_CHECK_HEADERS([gtest/gtest.h], [], [AC_MSG_ERROR([Google Test not installed])])
 AC_CHECK_HEADERS([benchmark/benchmark.h], [], [AC_MSG_ERROR([Google Benchmark not installed])])
-AC_CHECK_HEADERS([boost/multiprecision/cpp_int.hpp])
+AC_CHECK_HEADERS([boost/multiprecision/cpp_int.hpp], [], [AC_MSG_ERROR([Boost Multiprecision Libraries not installed])])
 AC_CHECK_HEADERS([gmp.h], [], [AC_MSG_ERROR([GMP headers not found])])
 AC_LANG_POP
 
