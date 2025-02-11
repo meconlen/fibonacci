@@ -23,7 +23,7 @@ boost::multiprecision::mpz_int fibonacci_matrix_pow_mpz(boost::multiprecision::m
 {
     if(n == 0) return 0;
     if(n == 1) return 1;
-    matrix<mpz_int> fib_matrix = util::fibonacci_matrix_pow(n);
+    matrix<mpz_int> fib_matrix = util::matrix_pow(n);
     return fib_matrix(0, 1);
 }
 
@@ -31,7 +31,7 @@ boost::multiprecision::mpz_int fibonacci_matrix_pow_square_mpz(boost::multipreci
 {
     if(n == 0) return 0;
     if(n == 1) return 1;
-    matrix<mpz_int> fib_matrix = util::fibonacci_matrix_pow_square(n);
+    matrix<mpz_int> fib_matrix = util::matrix_pow_square(n);
     return fib_matrix(0, 1);
 }
 
@@ -39,32 +39,32 @@ boost::multiprecision::mpz_int fibonacci_fast_doubling_mpz(boost::multiprecision
 {
     std::map<boost::multiprecision::mpz_int, boost::multiprecision::mpz_int> memo{{0, 0}, {1, 1}, {2, 1}, {3, 2}, {4, 3}, {5, 5}};
 
-    return util::fibonacci_fast_doubling_mpz_impl(n, memo);
+    return util::fast_doubling_mpz_impl(n, memo);
 }
 
 namespace util {
 
-boost::multiprecision::mpz_int fibonacci_fast_doubling_mpz_impl(boost::multiprecision::mpz_int n, std::map<boost::multiprecision::mpz_int, boost::multiprecision::mpz_int> &memo)
+boost::multiprecision::mpz_int fast_doubling_mpz_impl(boost::multiprecision::mpz_int n, std::map<boost::multiprecision::mpz_int, boost::multiprecision::mpz_int> &memo)
 {
     if(memo.contains(n)) return memo[n];
     if(n % 2 == 0) {
         mpz_int k = n/2;
-        mpz_int f_k = fibonacci_fast_doubling_mpz_impl(k, memo);
-        mpz_int f_k_1 = fibonacci_fast_doubling_mpz_impl(k+1, memo);
+        mpz_int f_k = fast_doubling_mpz_impl(k, memo);
+        mpz_int f_k_1 = fast_doubling_mpz_impl(k+1, memo);
         mpz_int f_n = f_k * (2*f_k_1 - f_k);
         memo.insert({n, f_n});
         return f_n;
     } else {
         mpz_int k = (n-1)/2;
-        mpz_int f_k = fibonacci_fast_doubling_mpz_impl(k, memo);
-        mpz_int f_k_1 = fibonacci_fast_doubling_mpz_impl(k+1, memo);
+        mpz_int f_k = fast_doubling_mpz_impl(k, memo);
+        mpz_int f_k_1 = fast_doubling_mpz_impl(k+1, memo);
         mpz_int f_n = f_k_1*f_k_1 + f_k * f_k;
         memo.insert({n, f_n});
         return f_n;
     }
 }
 
-matrix<mpz_int> fibonacci_matrix_identity()
+matrix<mpz_int> matrix_identity()
 {
     matrix<mpz_int> identity(2, 2);
     identity(0, 0) = 1;
@@ -77,9 +77,9 @@ matrix<mpz_int> fibonacci_matrix_identity()
 // exponential of the Fibonacci matrix. 
 // Note we don't find eigenvectors here because that takes us into the realm of 
 // floating point without knowing the precision we want. 
-matrix<mpz_int> fibonacci_matrix_pow(mpz_int n)
+matrix<mpz_int> matrix_pow(mpz_int n)
 {
-    if(n == 0) return fibonacci_matrix_identity();
+    if(n == 0) return matrix_identity();
     matrix<mpz_int> fib_m(2, 2), fib_exp_m(2, 2);
     fib_m(0, 0) = 1;
     fib_m(0, 1) = 1;
@@ -93,16 +93,16 @@ matrix<mpz_int> fibonacci_matrix_pow(mpz_int n)
     return fib_exp_m;
 }
 
-matrix<mpz_int> fibonacci_matrix_pow_square(mpz_int n)
+matrix<mpz_int> matrix_pow_square(mpz_int n)
 {
-    if(n == 0) return fibonacci_matrix_identity();
+    if(n == 0) return matrix_identity();
     matrix<mpz_int> fib_m(2, 2), fib_exp_m(2, 2);
     fib_m(0, 0) = 1;
     fib_m(0, 1) = 1;
     fib_m(1, 0) = 1;
     fib_m(1, 1) = 0;
     if(n == 1) return fib_m;
-    fib_exp_m = fibonacci_matrix_identity();
+    fib_exp_m = matrix_identity();
     
     while(n > 1) {
         if(n % 2 == 1)  { 
