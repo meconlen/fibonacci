@@ -35,6 +35,9 @@ stamp-h1
 test-driver
 config.h.in~
 configure~
+config.guess~
+config.sub~
+install-sh~
 
 # vscode 
 .vscode

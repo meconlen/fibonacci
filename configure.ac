@@ -8,7 +8,7 @@ AC_PROG_CC
 AC_PROG_CXX
 AC_LANG([C++])
 
-CXXFLAGS="$CXXFLAGS -Wall -Wextra -Wuninitialized -Wmissing-declarations -Wno-deprecated-copy -Werror=pedantic -pedantic-errors --std=c++20"
+CXXFLAGS="$CXXFLAGS -Wall -Wextra -Wuninitialized -Wmissing-declarations -Wno-deprecated-copy -Wno-unused-parameter -Werror=pedantic -pedantic-errors --std=c++20"
 LDFLAGS="$LDFLAGS"
 AC_CHECK_HEADERS([stdio.h])
 AC_CHECK_HEADERS([stdlib.h])

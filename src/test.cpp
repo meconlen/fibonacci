@@ -32,8 +32,27 @@ TEST(fibonacci, matrix_pow)
 	return;
 }
 
+TEST(fibonacci, matrix_pow_square)
+{
+    mpz_int n = 100000;
+    mpz_int fn = fibonacci_matrix_pow_square_mpz(n);
+    EXPECT_EQ(fn, F_100000_mpz);
+	return;
+}
 
-TEST(fibonacci, fibonacci_matrix_pow)
+TEST(fibonacci, fibonacci_fast_doubling_mpz)
+{
+    mpz_int n = 100000;
+    mpz_int fn = fibonacci_fast_doubling_mpz(n);
+    EXPECT_EQ(fn, F_100000_mpz);
+	return;
+}
+
+
+
+
+
+TEST(fibonacci_matrix, fibonacci_matrix_pow)
 {
     matrix<mpz_int> fib_m_1 = util::fibonacci_matrix_pow(0);
     matrix<mpz_int> fib_identity = util::fibonacci_matrix_identity();
@@ -48,7 +67,7 @@ TEST(fibonacci, fibonacci_matrix_pow)
     EXPECT_TRUE(std::equal(rv.begin1(), rv.end1(), expected.begin1())); 
 }
 
-TEST(fibonacci, fibonacci_matrix_pow_square)
+TEST(fibonacci_matrix, fibonacci_matrix_pow_square_odd)
 {
     matrix<mpz_int> fib_m_1 = util::fibonacci_matrix_pow_square(0);
     matrix<mpz_int> fib_identity = util::fibonacci_matrix_identity();
@@ -63,6 +82,17 @@ TEST(fibonacci, fibonacci_matrix_pow_square)
     EXPECT_TRUE(std::equal(rv.begin1(), rv.end1(), expected.begin1())); 
 }
 
+
+TEST(fibonacci_matrix, fibonacci_matrix_pow_square_power_2)
+{
+    matrix<mpz_int> expected(2, 2);
+    expected(0, 0) = 5;
+    expected(0, 1) = 3;
+    expected(1, 0) = 3;
+    expected(1, 1) = 2;
+    matrix<mpz_int> rv = util::fibonacci_matrix_pow_square(4);
+    EXPECT_TRUE(std::equal(rv.begin1(), rv.end1(), expected.begin1())); 
+}
 
 #endif
 

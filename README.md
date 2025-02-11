@@ -6,9 +6,7 @@ This repository has a github action to run the unit tests on commits to branches
 
 # Dependencies 
 
-This depends on having standard autotools available. 
-
-The test program assumes you have Google Test. You can remove it easily. 
+This depends on having standard autotools available along with Google Test, Google Benchmark, C++ Boost and the GNU MultiPrecision library. 
 
 # Building
 
