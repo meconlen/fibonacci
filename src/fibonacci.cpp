@@ -38,12 +38,24 @@ boost::multiprecision::mpz_int fibonacci_matrix_pow_square_mpz(boost::multipreci
 boost::multiprecision::mpz_int fibonacci_fast_doubling_memoized_mpz(boost::multiprecision::mpz_int n)
 {
     std::map<boost::multiprecision::mpz_int, boost::multiprecision::mpz_int> memo{{0, 0}, {1, 1}, {2, 1}, {3, 2}, {4, 3}, {5, 5}};
-
     return util::fast_doubling_mpz_impl(n, memo);
 }
 
 boost::multiprecision::mpz_int fibonacci_fast_doubling_iterative_mpz(boost::multiprecision::mpz_int n)
 {
+    if(n == 0) return 0;
+    if(n == 1) return 1;
+    mpz_int k = ( n % 2 == 0 ? n/(mpz_int)2 : (n-(mpz_int)1)/(mpz_int)2 );
+    auto [f_k, f_k_1] = util::fast_doubling_mpz_impl(k);
+
+    if(n % 2 == 0) {
+        mpz_int f_n = f_k * (2*f_k_1 - f_k);
+        return f_n;
+    } else {
+        mpz_int f_n_1 =  f_k_1*f_k_1 + f_k * f_k;;
+        return f_n_1;
+    }
+
     return util::fast_doubling_mpz_impl(n).first;
 }
 
