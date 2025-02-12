@@ -35,32 +35,57 @@ boost::multiprecision::mpz_int fibonacci_matrix_pow_square_mpz(boost::multipreci
     return fib_matrix(0, 1);
 }
 
-boost::multiprecision::mpz_int fibonacci_fast_doubling_mpz(boost::multiprecision::mpz_int n)
+boost::multiprecision::mpz_int fibonacci_fast_doubling_memoized_mpz(boost::multiprecision::mpz_int n)
 {
     std::map<boost::multiprecision::mpz_int, boost::multiprecision::mpz_int> memo{{0, 0}, {1, 1}, {2, 1}, {3, 2}, {4, 3}, {5, 5}};
 
     return util::fast_doubling_mpz_impl(n, memo);
 }
 
+boost::multiprecision::mpz_int fibonacci_fast_doubling_iterative_mpz(boost::multiprecision::mpz_int n)
+{
+    return util::fast_doubling_mpz_impl(n).first;
+}
+
+
 namespace util {
 
 boost::multiprecision::mpz_int fast_doubling_mpz_impl(boost::multiprecision::mpz_int n, std::map<boost::multiprecision::mpz_int, boost::multiprecision::mpz_int> &memo)
 {
     if(memo.contains(n)) return memo[n];
+    mpz_int k = ( n % 2 == 0 ? n/(mpz_int)2 : (n-(mpz_int)1)/(mpz_int)2 );
+    mpz_int f_k = fast_doubling_mpz_impl(k, memo);
+    mpz_int f_k_1 = fast_doubling_mpz_impl(k+1, memo);
+
+    // if n == 2k then we return F[k] * (2 F[k+1] - F[k])
+    // if n == 2k+1 then we return F[k+1]^2 + F[k]^2
+
     if(n % 2 == 0) {
-        mpz_int k = n/2;
-        mpz_int f_k = fast_doubling_mpz_impl(k, memo);
-        mpz_int f_k_1 = fast_doubling_mpz_impl(k+1, memo);
         mpz_int f_n = f_k * (2*f_k_1 - f_k);
         memo.insert({n, f_n});
         return f_n;
     } else {
-        mpz_int k = (n-1)/2;
-        mpz_int f_k = fast_doubling_mpz_impl(k, memo);
-        mpz_int f_k_1 = fast_doubling_mpz_impl(k+1, memo);
         mpz_int f_n = f_k_1*f_k_1 + f_k * f_k;
         memo.insert({n, f_n});
         return f_n;
+    }
+}
+
+std::pair<boost::multiprecision::mpz_int, boost::multiprecision::mpz_int> fast_doubling_mpz_impl(boost::multiprecision::mpz_int n)
+{
+    if(n == 0) return {0, 1};
+    if(n == 1) return {1, 1};
+    mpz_int k = ( n % 2 == 0 ? n/(mpz_int)2 : (n-(mpz_int)1)/(mpz_int)2 );
+    auto [f_k, f_k_1] = fast_doubling_mpz_impl(k);
+    mpz_int f_n = f_k * (2*f_k_1 - f_k);
+    mpz_int f_n_1 =  f_k_1*f_k_1 + f_k * f_k;;
+
+    if(n % 2 == 0) {
+        return {f_n, f_n_1};
+    } else {
+        // mpz_int f_n = f_k_1*f_k_1 + f_k * f_k;
+        // mpz_int f_n_1 = f_k * (2*f_k_1 - f_k);
+        return {f_n_1, f_n_1 + f_n};
     }
 }
 

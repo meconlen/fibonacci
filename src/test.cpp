@@ -40,10 +40,10 @@ TEST(fibonacci, matrix_pow_square)
 	return;
 }
 
-TEST(fibonacci, fibonacci_fast_doubling_mpz)
+TEST(fibonacci, fibonacci_fast_doubling_memoized_mpz)
 {
     mpz_int n = 100000;
-    mpz_int fn = fibonacci_fast_doubling_mpz(n);
+    mpz_int fn = fibonacci_fast_doubling_memoized_mpz(n);
     EXPECT_EQ(fn, F_100000_mpz);
 	return;
 }

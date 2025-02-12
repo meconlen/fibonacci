@@ -43,14 +43,24 @@ static void BM_FIBONACCI_MATRIX_POW_SQUARE_MPZ_20000000(benchmark::State& state)
 }
 BENCHMARK(BM_FIBONACCI_MATRIX_POW_SQUARE_MPZ_20000000);
 
-static void BM_FIBONACCI_FAST_DOUBLING_MPZ_20000000(benchmark::State& state) {
+static void BM_FIBONACCI_FAST_DOUBLING_MEMOIZED_MPZ_20000000(benchmark::State& state) {
     mpz_int n = 20000000;
 
     for (auto _ : state) {
-        mpz_int fn = fibonacci_fast_doubling_mpz(n);
+        mpz_int fn = fibonacci_fast_doubling_memoized_mpz(n);
     }
 }
-BENCHMARK(BM_FIBONACCI_FAST_DOUBLING_MPZ_20000000);
+BENCHMARK(BM_FIBONACCI_FAST_DOUBLING_MEMOIZED_MPZ_20000000);
+
+static void BM_FIBONACCI_FAST_DOUBLING_ITERATIVE_MPZ_20000000(benchmark::State& state) {
+    mpz_int n = 20000000;
+
+    for (auto _ : state) {
+        mpz_int fn = fibonacci_fast_doubling_iterative_mpz(n);
+    }
+}
+BENCHMARK(BM_FIBONACCI_FAST_DOUBLING_ITERATIVE_MPZ_20000000);
+
 
 static void BM_MATRIX_POW(benchmark::State& state) {
     mpz_int n = 100000;
