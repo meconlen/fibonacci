@@ -83,8 +83,6 @@ std::pair<boost::multiprecision::mpz_int, boost::multiprecision::mpz_int> fast_d
     if(n % 2 == 0) {
         return {f_n, f_n_1};
     } else {
-        // mpz_int f_n = f_k_1*f_k_1 + f_k * f_k;
-        // mpz_int f_n_1 = f_k * (2*f_k_1 - f_k);
         return {f_n_1, f_n_1 + f_n};
     }
 }
