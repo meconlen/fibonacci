@@ -16,7 +16,7 @@ jobs:
       - name: install Google Test and Google Benchmark
         run: sudo apt-get -y install libgtest-dev libbenchmark-dev
       - name: Install Boost
-        run: sudo apt-get -y install libboost-all-dev
+        run: sudo apt-get -y install libboost-dev
       - name: autoreconf
         run: autoreconf -vfi
       - name: configure
