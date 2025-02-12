@@ -13,7 +13,7 @@ namespace fibonacci {
     boost::multiprecision::mpz_int fibonacci_matrix_pow_square_mpz(boost::multiprecision::mpz_int n);
     boost::multiprecision::mpz_int fibonacci_iterative_mpz(boost::multiprecision::mpz_int n);
     boost::multiprecision::mpz_int fibonacci_fast_doubling_memoized_mpz(boost::multiprecision::mpz_int n);
-    boost::multiprecision::mpz_int fibonacci_fast_doubling_iterative_mpz(boost::multiprecision::mpz_int n);
+    boost::multiprecision::mpz_int fibonacci_fast_doubling_recursive_mpz(boost::multiprecision::mpz_int n);
 
     namespace util {
         boost::multiprecision::mpz_int fast_doubling_mpz_impl(boost::multiprecision::mpz_int n, std::map<boost::multiprecision::mpz_int, boost::multiprecision::mpz_int> &memo);

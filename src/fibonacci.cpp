@@ -41,7 +41,7 @@ boost::multiprecision::mpz_int fibonacci_fast_doubling_memoized_mpz(boost::multi
     return util::fast_doubling_mpz_impl(n, memo);
 }
 
-boost::multiprecision::mpz_int fibonacci_fast_doubling_iterative_mpz(boost::multiprecision::mpz_int n)
+boost::multiprecision::mpz_int fibonacci_fast_doubling_recursive_mpz(boost::multiprecision::mpz_int n)
 {
     if(n == 0) return 0;
     if(n == 1) return 1;

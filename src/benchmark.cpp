@@ -52,14 +52,14 @@ static void BM_FIBONACCI_FAST_DOUBLING_MEMOIZED_MPZ_20000000(benchmark::State& s
 }
 BENCHMARK(BM_FIBONACCI_FAST_DOUBLING_MEMOIZED_MPZ_20000000);
 
-static void BM_FIBONACCI_FAST_DOUBLING_ITERATIVE_MPZ_20000000(benchmark::State& state) {
+static void BM_FIBONACCI_FAST_DOUBLING_RECURSIVE_MPZ_20000000(benchmark::State& state) {
     mpz_int n = 20000000;
 
     for (auto _ : state) {
-        mpz_int fn = fibonacci_fast_doubling_iterative_mpz(n);
+        mpz_int fn = fibonacci_fast_doubling_recursive_mpz(n);
     }
 }
-BENCHMARK(BM_FIBONACCI_FAST_DOUBLING_ITERATIVE_MPZ_20000000);
+BENCHMARK(BM_FIBONACCI_FAST_DOUBLING_RECURSIVE_MPZ_20000000);
 
 
 static void BM_MATRIX_POW(benchmark::State& state) {

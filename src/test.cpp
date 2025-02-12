@@ -48,18 +48,18 @@ TEST(fibonacci, fibonacci_fast_doubling_memoized_mpz)
 	return;
 }
 
-TEST(fibonacci, fibonacci_fast_doubling_iterative_even_mpz)
+TEST(fibonacci, fibonacci_fast_doubling_recursive_even_mpz)
 {
     mpz_int n = 100000;
-    mpz_int fn = fibonacci_fast_doubling_iterative_mpz(n);
+    mpz_int fn = fibonacci_fast_doubling_recursive_mpz(n);
     EXPECT_EQ(fn, F_100000_mpz);
 	return;
 }
 
-TEST(fibonacci, fibonacci_fast_doubling_iterative_odd_mpz)
+TEST(fibonacci, fibonacci_fast_doubling_recursive_odd_mpz)
 {
     mpz_int n = 11;
-    mpz_int fn = fibonacci_fast_doubling_iterative_mpz(n);
+    mpz_int fn = fibonacci_fast_doubling_recursive_mpz(n);
     EXPECT_EQ(fn, 89);
 	return;
 }
