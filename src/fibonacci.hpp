@@ -16,7 +16,7 @@ namespace fibonacci {
     boost::multiprecision::mpz_int fibonacci_fast_doubling_iterative_mpz(boost::multiprecision::mpz_int n);
 
     namespace util {
-        boost::multiprecision::mpz_int fast_doubling_mpz_impl(boost::multiprecision::mpz_int n, std::map<boost::multiprecision::mpz_int, boost::multiprecision::mpz_int> &memo);
+        std::pair<boost::multiprecision::mpz_int, boost::multiprecision::mpz_int>  fast_doubling_mpz_impl(boost::multiprecision::mpz_int n, std::map<boost::multiprecision::mpz_int, boost::multiprecision::mpz_int> &memo);
         std::pair<boost::multiprecision::mpz_int, boost::multiprecision::mpz_int> fast_doubling_mpz_impl(boost::multiprecision::mpz_int n);
         boost::numeric::ublas::matrix<boost::multiprecision::mpz_int> matrix_identity();
         boost::numeric::ublas::matrix<boost::multiprecision::mpz_int> matrix_pow(boost::multiprecision::mpz_int n);
