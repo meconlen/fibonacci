@@ -59,6 +59,11 @@ boost::multiprecision::mpz_int fibonacci_fast_doubling_recursive_mpz(boost::mult
     return util::fast_doubling_mpz_impl(n).first;
 }
 
+boost::multiprecision::mpz_int fibonacci_fast_doubling_recursive_quad_mpz(boost::multiprecision::mpz_int n)
+{
+    return util::fast_doubling_quad_mpz_impl(n).first;
+}
+
 
 namespace util {
 
@@ -98,6 +103,12 @@ std::pair<boost::multiprecision::mpz_int, boost::multiprecision::mpz_int> fast_d
         return {f_n_1, f_n_1 + f_n};
     }
 }
+
+std::pair<boost::multiprecision::mpz_int, boost::multiprecision::mpz_int> fast_doubling_quad_mpz_impl(boost::multiprecision::mpz_int n)
+{
+    return {0, 1};
+}
+
 
 matrix<mpz_int> matrix_identity()
 {
