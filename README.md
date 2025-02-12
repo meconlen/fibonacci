@@ -16,7 +16,11 @@ autoreconf -vfi
 make check
 ```
 
-You should see a failed test. Write some tests and make them pass!
+This will run the unit tests. To run benchmarks simply run 
+
+```
+src/benchmark
+```
 
 ## includes and libs 
 
