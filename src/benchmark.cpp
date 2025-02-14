@@ -61,6 +61,24 @@ static void BM_FIBONACCI_FAST_DOUBLING_RECURSIVE_MPZ_20000000(benchmark::State& 
 }
 BENCHMARK(BM_FIBONACCI_FAST_DOUBLING_RECURSIVE_MPZ_20000000);
 
+static void BM_FIBONACCI_FAST_DOUBLING_RECURSIVE_QUAD_MPZ_20000000(benchmark::State& state) {
+    mpz_int n = 20000000;
+
+    for (auto _ : state) {
+        mpz_int fn = fibonacci_fast_doubling_recursive_quad_mpz(n);
+    }
+}
+BENCHMARK(BM_FIBONACCI_FAST_DOUBLING_RECURSIVE_QUAD_MPZ_20000000);
+
+static void BM_FIBONACCI_BINET_GMP_20000000(benchmark::State& state) {
+    mpz_int n = 20000000;
+    mpz_int result = 0;
+    for (auto _ : state) {
+        mpz_int fn = fibonacci_binet_mpf(n);
+        result = fn;
+    }
+}
+BENCHMARK(BM_FIBONACCI_BINET_GMP_20000000);
 
 static void BM_MATRIX_POW(benchmark::State& state) {
     mpz_int n = 100000;

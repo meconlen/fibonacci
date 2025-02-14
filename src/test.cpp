@@ -3,6 +3,7 @@
 
 #include "fibonacci.hpp"
 #include "fibonacci_test_data.hpp"
+#include "quadratic.hpp"
 
 #include "../config.h"
 
@@ -64,6 +65,67 @@ TEST(fibonacci, fibonacci_fast_doubling_recursive_odd_mpz)
 	return;
 }
 
+TEST(fibonacci, fibonacci_fast_doubling_recursive_quad_large_mpz)
+{
+    mpz_int n = 100000;
+    mpz_int fn = fibonacci_fast_doubling_recursive_quad_mpz(n);
+    EXPECT_EQ(fn, F_100000_mpz);
+	return;
+}
+
+TEST(fibonacci, fibonacci_fast_doubling_recursive_quad_mod_zero_mpz)
+{
+    mpz_int n = 16;
+    mpz_int fn = fibonacci_fast_doubling_recursive_quad_mpz(n);
+    EXPECT_EQ(fn, 987);
+	return;
+}
+
+TEST(fibonacci, fibonacci_fast_doubling_recursive_quad_mod_one_mpz)
+{
+    mpz_int n = 17;
+    mpz_int fn = fibonacci_fast_doubling_recursive_quad_mpz(n);
+    EXPECT_EQ(fn, 1597);
+	return;
+}
+
+TEST(fibonacci, fibonacci_fast_doubling_recursive_quad_mod_two_mpz)
+{
+    mpz_int n = 18;
+    mpz_int fn = fibonacci_fast_doubling_recursive_quad_mpz(n);
+    EXPECT_EQ(fn, 2584);
+	return;
+}
+
+TEST(fibonacci, fibonacci_fast_doubling_recursive_quad_mod_three_mpz)
+{
+    mpz_int n = 19;
+    mpz_int fn = fibonacci_fast_doubling_recursive_quad_mpz(n);
+    EXPECT_EQ(fn, 4181);
+	return;
+}
+
+TEST(fibonacci, fibonacci_fast_doubling_recursive_quad_odd_mpz)
+{
+    mpz_int n = 11;
+    mpz_int fn = fibonacci_fast_doubling_recursive_quad_mpz(n);
+    EXPECT_EQ(fn, 89);
+	return;
+}
+
+TEST(fibonacci, fibonacci_binet)
+{
+    mpz_int n = 100000;
+    mpz_int fn = fibonacci_binet_mpf(n);
+    EXPECT_EQ(fn, F_100000_mpz);
+	return;
+}
+
+// TEST(fibonacci, fibonacci_binet_20000000)
+// {
+//     EXPECT_EQ(fibonacci_fast_doubling_recursive_mpz(20000000), fibonacci_binet_mpf(20000000));
+//     return;
+// }
 
 TEST(fibonacci_matrix, fibonacci_matrix_pow)
 {
@@ -105,6 +167,12 @@ TEST(fibonacci_matrix, matrix_pow_square_power_2)
     expected(1, 1) = 2;
     matrix<mpz_int> rv = util::matrix_pow_square(4);
     EXPECT_TRUE(std::equal(rv.begin1(), rv.end1(), expected.begin1())); 
+}
+
+TEST(quadratic, to_string)
+{
+    quadratic_integer<5> q(1, 1);
+    EXPECT_EQ(q.to_string(), "1 + 1 sqrt(5)");
 }
 
 #endif
