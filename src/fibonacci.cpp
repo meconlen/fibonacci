@@ -9,6 +9,14 @@ using namespace boost::numeric::ublas;
 using namespace boost::multiprecision;
 
 namespace fibonacci {
+
+boost::multiprecision::mpz_int fibonacci_recursive(boost::multiprecision::mpz_int n)
+{
+    if(n == 0) return 0;
+    if(n == 1) return 1;
+    return fibonacci_recursive(n-1) + fibonacci_recursive(n-2);
+}
+
 boost::multiprecision::mpz_int fibonacci_iterative_mpz(boost::multiprecision::mpz_int n)
 {
     if(n == 0) return 0;

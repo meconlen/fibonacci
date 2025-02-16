@@ -17,6 +17,12 @@ using namespace boost::numeric::ublas;
 using namespace fibonacci;
 
 #ifdef HAVE_GTEST_GTEST_H
+
+TEST(fibonacci, recursive)
+{
+    EXPECT_EQ(fibonacci_recursive(11), 89);
+}
+
 TEST(fibonacci, iterative)
 {
     mpz_int n = 100000;
