@@ -20,7 +20,7 @@ using namespace fibonacci;
 
 TEST(fibonacci, recursive)
 {
-    EXPECT_EQ(fibonacci_recursive(11), 89);
+    EXPECT_EQ(fibonacci_recursive_mpz(11), 89);
 }
 
 TEST(fibonacci, iterative)

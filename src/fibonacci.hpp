@@ -13,7 +13,7 @@
 // NB: we will index the sequence at 0 so F_0 = 0, F_1 = 1
 
 namespace fibonacci {
-    boost::multiprecision::mpz_int fibonacci_recursive(boost::multiprecision::mpz_int n);
+    boost::multiprecision::mpz_int fibonacci_recursive_mpz(boost::multiprecision::mpz_int n);
     boost::multiprecision::mpz_int fibonacci_matrix_pow_mpz(boost::multiprecision::mpz_int n);
     boost::multiprecision::mpz_int fibonacci_matrix_pow_square_mpz(boost::multiprecision::mpz_int n);
     boost::multiprecision::mpz_int fibonacci_iterative_mpz(boost::multiprecision::mpz_int n);

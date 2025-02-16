@@ -5,6 +5,15 @@ using namespace boost::multiprecision;
 using namespace boost::numeric::ublas;
 using namespace fibonacci;
 
+static void BM_FIBONACCI_RECUSRIVE_MPZ(benchmark::State& state) {
+    mpz_int n = 30;
+
+    for (auto _ : state) {
+        mpz_int fn = fibonacci_recursive_mpz(n);
+    }
+}
+BENCHMARK(BM_FIBONACCI_RECUSRIVE_MPZ);
+
 static void BM_FIBONACCI_ITERATIVE_MPZ(benchmark::State& state) {
     mpz_int n = 100000;
 
