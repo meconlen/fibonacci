@@ -10,14 +10,14 @@ using namespace boost::multiprecision;
 
 namespace fibonacci {
 
-boost::multiprecision::mpz_int fibonacci_recursive_mpz(boost::multiprecision::mpz_int n)
+boost::multiprecision::mpz_int fibonacci_recursive_mpz(unsigned int n)
 {
     if(n == 0) return 0;
     if(n == 1) return 1;
     return fibonacci_recursive_mpz(n-1) + fibonacci_recursive_mpz(n-2);
 }
 
-boost::multiprecision::mpz_int fibonacci_iterative_mpz(boost::multiprecision::mpz_int n)
+boost::multiprecision::mpz_int fibonacci_iterative_mpz(unsigned int n)
 {
     if(n == 0) return 0;
     if(n == 1) return 1;
@@ -32,7 +32,7 @@ boost::multiprecision::mpz_int fibonacci_iterative_mpz(boost::multiprecision::mp
     return f_0;
 }
 
-boost::multiprecision::mpz_int fibonacci_matrix_pow_mpz(boost::multiprecision::mpz_int n)
+boost::multiprecision::mpz_int fibonacci_matrix_pow_mpz(unsigned int n)
 {
     if(n == 0) return 0;
     if(n == 1) return 1;
@@ -40,7 +40,7 @@ boost::multiprecision::mpz_int fibonacci_matrix_pow_mpz(boost::multiprecision::m
     return fib_matrix(0, 1);
 }
 
-boost::multiprecision::mpz_int fibonacci_matrix_pow_square_mpz(boost::multiprecision::mpz_int n)
+boost::multiprecision::mpz_int fibonacci_matrix_pow_square_mpz(unsigned int n)
 {
     if(n == 0) return 0;
     if(n == 1) return 1;
@@ -48,13 +48,13 @@ boost::multiprecision::mpz_int fibonacci_matrix_pow_square_mpz(boost::multipreci
     return fib_matrix(0, 1);
 }
 
-boost::multiprecision::mpz_int fibonacci_fast_doubling_memoized_mpz(boost::multiprecision::mpz_int n)
+boost::multiprecision::mpz_int fibonacci_fast_doubling_memoized_mpz(unsigned int n)
 {
     std::map<boost::multiprecision::mpz_int, boost::multiprecision::mpz_int> memo{{0, 0}, {1, 1}, {2, 1}, {3, 2}, {4, 3}, {5, 5}};
     return util::fast_doubling_mpz_impl(n, memo);
 }
 
-boost::multiprecision::mpz_int fibonacci_fast_doubling_recursive_mpz(boost::multiprecision::mpz_int n)
+boost::multiprecision::mpz_int fibonacci_fast_doubling_recursive_mpz(unsigned int n)
 {
     if(n == 0) return 0;
     if(n == 1) return 1;
@@ -72,7 +72,7 @@ boost::multiprecision::mpz_int fibonacci_fast_doubling_recursive_mpz(boost::mult
     return util::fast_doubling_mpz_impl(n).first;
 }
 
-boost::multiprecision::mpz_int fibonacci_fast_doubling_recursive_quad_mpz(const boost::multiprecision::mpz_int &n)
+boost::multiprecision::mpz_int fibonacci_fast_doubling_recursive_quad_mpz(unsigned int n)
 {
     if(n == 0) return 0;
     if(n == 1) return 1; 
@@ -112,7 +112,7 @@ boost::multiprecision::mpz_int fibonacci_fast_doubling_recursive_quad_mpz(const 
     return util::fast_doubling_quad_mpz_impl(n).first;
 }
 
-boost::multiprecision::mpz_int fibonacci_binet_mpf(const boost::multiprecision::mpz_int &n)
+boost::multiprecision::mpz_int fibonacci_binet_mpf(unsigned int n)
 {
     // first we compute how many digits we need
     mpf_float est_phi = (1+sqrt(((mpf_float)5)))/2;
@@ -127,7 +127,7 @@ boost::multiprecision::mpz_int fibonacci_binet_mpf(const boost::multiprecision::
 }
 
 using namespace quadratic;
-boost::multiprecision::mpz_int fibonacci_z5_mpz(const unsigned int &n)
+boost::multiprecision::mpz_int fibonacci_z5_mpz(unsigned int n)
 {
     quadratic_integer<5> phi(1, 1);
     quadratic_integer<5> psi(1, -1);

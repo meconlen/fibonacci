@@ -25,7 +25,7 @@ TEST(fibonacci, recursive)
 
 TEST(fibonacci, iterative)
 {
-    mpz_int n = 100000;
+    unsigned int n = 100000;
     mpz_int fn = fibonacci_iterative_mpz(n);
     EXPECT_EQ(fn, F_100000_mpz);
 	return;
@@ -33,7 +33,7 @@ TEST(fibonacci, iterative)
 
 TEST(fibonacci, matrix_pow)
 {
-    mpz_int n = 100000;
+    unsigned int n = 100000;
     mpz_int fn = fibonacci_matrix_pow_mpz(n);
     EXPECT_EQ(fn, F_100000_mpz);
 	return;
@@ -41,7 +41,7 @@ TEST(fibonacci, matrix_pow)
 
 TEST(fibonacci, matrix_pow_square)
 {
-    mpz_int n = 100000;
+    unsigned int n = 100000;
     mpz_int fn = fibonacci_matrix_pow_square_mpz(n);
     EXPECT_EQ(fn, F_100000_mpz);
 	return;
@@ -49,7 +49,7 @@ TEST(fibonacci, matrix_pow_square)
 
 TEST(fibonacci, fibonacci_fast_doubling_memoized_mpz)
 {
-    mpz_int n = 100000;
+    unsigned int n = 100000;
     mpz_int fn = fibonacci_fast_doubling_memoized_mpz(n);
     EXPECT_EQ(fn, F_100000_mpz);
 	return;
@@ -57,7 +57,7 @@ TEST(fibonacci, fibonacci_fast_doubling_memoized_mpz)
 
 TEST(fibonacci, fibonacci_fast_doubling_recursive_even_mpz)
 {
-    mpz_int n = 100000;
+    unsigned int n = 100000;
     mpz_int fn = fibonacci_fast_doubling_recursive_mpz(n);
     EXPECT_EQ(fn, F_100000_mpz);
 	return;
@@ -65,7 +65,7 @@ TEST(fibonacci, fibonacci_fast_doubling_recursive_even_mpz)
 
 TEST(fibonacci, fibonacci_fast_doubling_recursive_odd_mpz)
 {
-    mpz_int n = 11;
+    unsigned int n = 11;
     mpz_int fn = fibonacci_fast_doubling_recursive_mpz(n);
     EXPECT_EQ(fn, 89);
 	return;
@@ -73,7 +73,7 @@ TEST(fibonacci, fibonacci_fast_doubling_recursive_odd_mpz)
 
 TEST(fibonacci, fibonacci_fast_doubling_recursive_quad_large_mpz)
 {
-    mpz_int n = 100000;
+    unsigned int n = 100000;
     mpz_int fn = fibonacci_fast_doubling_recursive_quad_mpz(n);
     EXPECT_EQ(fn, F_100000_mpz);
 	return;
@@ -81,7 +81,7 @@ TEST(fibonacci, fibonacci_fast_doubling_recursive_quad_large_mpz)
 
 TEST(fibonacci, fibonacci_fast_doubling_recursive_quad_mod_zero_mpz)
 {
-    mpz_int n = 16;
+    unsigned int n = 16;
     mpz_int fn = fibonacci_fast_doubling_recursive_quad_mpz(n);
     EXPECT_EQ(fn, 987);
 	return;
@@ -89,7 +89,7 @@ TEST(fibonacci, fibonacci_fast_doubling_recursive_quad_mod_zero_mpz)
 
 TEST(fibonacci, fibonacci_fast_doubling_recursive_quad_mod_one_mpz)
 {
-    mpz_int n = 17;
+    unsigned int n = 17;
     mpz_int fn = fibonacci_fast_doubling_recursive_quad_mpz(n);
     EXPECT_EQ(fn, 1597);
 	return;
@@ -97,7 +97,7 @@ TEST(fibonacci, fibonacci_fast_doubling_recursive_quad_mod_one_mpz)
 
 TEST(fibonacci, fibonacci_fast_doubling_recursive_quad_mod_two_mpz)
 {
-    mpz_int n = 18;
+    unsigned int n = 18;
     mpz_int fn = fibonacci_fast_doubling_recursive_quad_mpz(n);
     EXPECT_EQ(fn, 2584);
 	return;
@@ -105,7 +105,7 @@ TEST(fibonacci, fibonacci_fast_doubling_recursive_quad_mod_two_mpz)
 
 TEST(fibonacci, fibonacci_fast_doubling_recursive_quad_mod_three_mpz)
 {
-    mpz_int n = 19;
+    unsigned int n = 19;
     mpz_int fn = fibonacci_fast_doubling_recursive_quad_mpz(n);
     EXPECT_EQ(fn, 4181);
 	return;
@@ -113,7 +113,7 @@ TEST(fibonacci, fibonacci_fast_doubling_recursive_quad_mod_three_mpz)
 
 TEST(fibonacci, fibonacci_fast_doubling_recursive_quad_odd_mpz)
 {
-    mpz_int n = 11;
+    unsigned int n = 11;
     mpz_int fn = fibonacci_fast_doubling_recursive_quad_mpz(n);
     EXPECT_EQ(fn, 89);
 	return;
@@ -121,7 +121,7 @@ TEST(fibonacci, fibonacci_fast_doubling_recursive_quad_odd_mpz)
 
 TEST(fibonacci, fibonacci_binet)
 {
-    mpz_int n = 100000;
+    unsigned int n = 100000;
     mpz_int fn = fibonacci_binet_mpf(n);
     EXPECT_EQ(fn, F_100000_mpz);
 	return;
