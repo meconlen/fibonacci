@@ -78,7 +78,20 @@ static void BM_FIBONACCI_BINET_GMP_20000000(benchmark::State& state) {
         result = fn;
     }
 }
+
 BENCHMARK(BM_FIBONACCI_BINET_GMP_20000000);
+
+static void BM_FIBONACCI_Z5_GMP_20000000(benchmark::State& state) {
+    unsigned long n = 20000000;
+    mpz_int result = 0;
+    for (auto _ : state) {
+        mpz_int fn = fibonacci_z5_mpz(n);
+        result = fn;
+    }
+}
+
+BENCHMARK(BM_FIBONACCI_Z5_GMP_20000000);
+
 
 static void BM_MATRIX_POW(benchmark::State& state) {
     mpz_int n = 100000;
@@ -87,6 +100,7 @@ static void BM_MATRIX_POW(benchmark::State& state) {
         matrix<mpz_int> rv = util::matrix_pow(n);
     }
 }
+
 BENCHMARK(BM_MATRIX_POW);
 
 static void BM_MATRIX_POW_SQUARE(benchmark::State& state) {

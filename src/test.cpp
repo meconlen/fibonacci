@@ -127,6 +127,11 @@ TEST(fibonacci, fibonacci_binet)
 //     return;
 // }
 
+TEST(fibonacci, fibonacci_z5_exponent)
+{
+    EXPECT_EQ(fibonacci_z5_mpz(100000), F_100000_mpz);
+}
+
 TEST(fibonacci_matrix, fibonacci_matrix_pow)
 {
     matrix<mpz_int> fib_m_1 = util::matrix_pow(0);
@@ -169,12 +174,103 @@ TEST(fibonacci_matrix, matrix_pow_square_power_2)
     EXPECT_TRUE(std::equal(rv.begin1(), rv.end1(), expected.begin1())); 
 }
 
+using namespace quadratic;
+
 TEST(quadratic, to_string)
 {
     quadratic_integer<5> q(1, 1);
     EXPECT_EQ(q.to_string(), "1 + 1 sqrt(5)");
 }
 
+TEST(quadratic, constructor)
+{
+    quadratic_integer<5> q((int)1, (unsigned int)1);
+    quadratic_integer<5> expected(1, 1);
+    EXPECT_EQ(q, expected);
+}
+
+TEST(quadratic, equality)
+{
+    quadratic_integer<5> q(1, 1), r(1, 1);
+    EXPECT_EQ(q == r, true);
+    quadratic_integer<5> s(2, 1);
+    EXPECT_EQ(q == s, false);
+}
+
+TEST(quadratic, not_equal)
+{
+    quadratic_integer<5> q(1, 1), r(1, 1);
+    EXPECT_EQ(q != r, false);
+    quadratic_integer<5> s(2, 1);
+    EXPECT_EQ(q != s, true);
+}
+TEST(quadratic, operator_plus_equal)
+{
+    quadratic_integer<5> a(1, 1);
+    quadratic_integer<5> b(2, 3);
+    a += b;
+    EXPECT_EQ(a, quadratic_integer<5>(3, 4));
+}
+
+TEST(quadratic, operator_minus_equal)
+{
+    quadratic_integer<5> a(5, 6);
+    quadratic_integer<5> b(1, 2);
+    a -= b;
+    EXPECT_EQ(a, quadratic_integer<5>(4, 4));
+}
+// (1+1S[5])(1+1S[5]) = 1+1S[5]+1S[5]+5
+//                    = 6+2S[5]
+TEST(quadratic, oeprator_star_equal)
+{
+    quadratic_integer<5> q(1, 1);
+    q *= q;
+    EXPECT_EQ(q, quadratic_integer<5>(6, 2));
+}
+
+TEST(quadratic, operator_unary_plus)
+{
+    quadratic_integer<5> q(1, 1);
+    EXPECT_EQ(+q, quadratic_integer<5>(1, 1) );
+}
+
+TEST(quadratic, operator_unary_minus)
+{
+    quadratic_integer<5> q(1, 1);
+    EXPECT_EQ(-q, quadratic_integer<5>(-1, -1));
+}
+
+TEST(quadratic, operator_plus)
+{
+    quadratic_integer<5> a(1, 2), b(3, 4);
+    EXPECT_EQ(a+b, quadratic_integer<5>(4, 6));
+}
+
+TEST(quadratic, operator_minus)
+{
+    quadratic_integer<5> a(3, 4), b(1, 2);
+    EXPECT_EQ(a-b, quadratic_integer<5>(2, 2));
+}
+
+TEST(quadratic, operator_star)
+{
+    quadratic_integer<5> a(1, 1), b(2, 2);
+    EXPECT_EQ(a*b, quadratic_integer<5>(12, 4));
+}
+
+TEST(quadratic, pow)
+{
+    quadratic_integer<5> a(2, 0);
+    EXPECT_EQ(pow(a, 1), a);
+    EXPECT_EQ(pow(a, 2), quadratic_integer<5>(4, 0));
+    EXPECT_EQ(pow(pow(a, 2), 3), quadratic_integer<5>(64, 0) );
+
+    quadratic_integer<5> phi(1, 1), psi(1, -1);
+    EXPECT_EQ(pow(phi, 5),quadratic_integer<5>(176, 80));
+
+    EXPECT_EQ(pow(phi, 1), quadratic_integer<5>(1, 1));
+    EXPECT_EQ(pow(psi, 1), quadratic_integer<5>(1, -1));
+}
 #endif
 
 int main(int argc, char **argv) {

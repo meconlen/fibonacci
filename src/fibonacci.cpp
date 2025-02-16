@@ -1,9 +1,10 @@
 #include "fibonacci.hpp"
+#include "quadratic.hpp"
+
 #include <cmath>
 #include <boost/math/special_functions/round.hpp>
 
 
-using namespace boost::multiprecision;
 using namespace boost::numeric::ublas;
 using namespace boost::multiprecision;
 
@@ -117,6 +118,14 @@ boost::multiprecision::mpz_int fibonacci_binet_mpf(const boost::multiprecision::
     return round(result).convert_to<mpz_int>();
 }
 
+using namespace quadratic;
+boost::multiprecision::mpz_int fibonacci_z5_mpz(const unsigned int &n)
+{
+    quadratic_integer<5> phi(1, 1);
+    quadratic_integer<5> psi(1, -1);
+    quadratic_integer<5> fn_numerator = (pow(phi, n) - pow(psi, n))/boost::multiprecision::pow((mpz_int)2, n);
+    return fn_numerator.radical_coefficient();
+}
 
 namespace util {
 
