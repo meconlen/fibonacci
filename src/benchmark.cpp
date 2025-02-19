@@ -240,24 +240,12 @@ static void BM_FIBONACCI_BINET_GMP_20000000(benchmark::State& state) {
     unsigned int n = 20000000;
     mpz_int result = 0;
     for (auto _ : state) {
-        mpz_int fn = fibonacci_binet_mpf(n);
+        mpz_int fn = fibonacci_binet<mpf_float, mpz_int, unsigned int>(n);
         result = fn;
     }
 }
 BENCHMARK(BM_FIBONACCI_BINET_GMP_20000000);
 #endif 
-
-#ifdef HAVE_BOOST_MULTIPRECISION_CPP_INT_HPP
-static void BM_FIBONACCI_Z5_CPP_20000000(benchmark::State& state) {
-    unsigned long n = 20000000;
-    cpp_int result = 0;
-    for (auto _ : state) {
-        cpp_int fn = fibonacci_z5<cpp_int>(n);
-        result = fn;
-    }
-}
-BENCHMARK(BM_FIBONACCI_Z5_CPP_20000000);
-#endif // HAVE_BOOST_MULTIPRECISION_CPP_INT_HPP
 
 #ifdef HAVE_GMP_H
 static void BM_FIBONACCI_Z5_GMP_20000000(benchmark::State& state) {
@@ -271,16 +259,28 @@ static void BM_FIBONACCI_Z5_GMP_20000000(benchmark::State& state) {
 BENCHMARK(BM_FIBONACCI_Z5_GMP_20000000);
 #endif // HAVE_GMP_H
 
+#ifdef HAVE_BOOST_MULTIPRECISION_CPP_INT_HPP
+static void BM_FIBONACCI_Z5_CPP_100000(benchmark::State& state) {
+    unsigned long n = 100000;
+    cpp_int result = 0;
+    for (auto _ : state) {
+        cpp_int fn = fibonacci_z5<cpp_int>(n);
+        result = fn;
+    }
+}
+BENCHMARK(BM_FIBONACCI_Z5_CPP_100000);
+#endif // HAVE_BOOST_MULTIPRECISION_CPP_INT_HPP
+
 #ifdef HAVE_TOMMATH_H
-static void BM_FIBONACCI_Z5_TOM_20000000(benchmark::State& state) {
-    unsigned long n = 20000000;
+static void BM_FIBONACCI_Z5_TOM_100000(benchmark::State& state) {
+    unsigned long n = 100000;
     tom_int result = 0;
     for (auto _ : state) {
         tom_int fn = fibonacci_z5<tom_int>(n);
         result = fn;
     }
 }
-BENCHMARK(BM_FIBONACCI_Z5_TOM_20000000);
+BENCHMARK(BM_FIBONACCI_Z5_TOM_100000);
 #endif // HAVE_TOMMATH_H
 
 #ifdef HAVE_BOOST_MULTIPRECISION_CPP_INT_HPP
@@ -305,4 +305,14 @@ static void BM_MATRIX_POW_MPZ(benchmark::State& state) {
 BENCHMARK(BM_MATRIX_POW_MPZ);
 #endif // HAVE_GMP_H
 
+#ifdef HAVE_TOMMATH_H
+static void BM_MATRIX_POW_TOM(benchmark::State& state) {
+    unsigned int n = 100000;
+
+    for (auto _ : state) {
+        matrix<tom_int> rv = util::matrix_pow<tom_int>(n);
+    }
+}
+BENCHMARK(BM_MATRIX_POW_TOM);
+#endif // HAVE_TOMMATH_H
 BENCHMARK_MAIN();

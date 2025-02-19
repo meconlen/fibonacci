@@ -281,7 +281,7 @@ TEST(fibonacci, fibonacci_fast_quad_odd)
 TEST(fibonacci, fibonacci_binet)
 {
     unsigned int n = 100000;
-    mpz_int fn = fibonacci_binet_mpf(n);
+    mpz_int fn = fibonacci_binet<mpf_float, mpz_int, unsigned int>(n);
     EXPECT_EQ(fn, F_100000_mpz);
 	return;
 }

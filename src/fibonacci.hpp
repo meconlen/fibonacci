@@ -227,9 +227,23 @@ T fibonacci_fast_quad(U n)
     return util::fast_quad_impl<T, U>(n).first;
 }
 
-boost::multiprecision::mpz_int fibonacci_binet_mpf(unsigned int n);
-// the pow() function we use only accepts unsigned int
-boost::multiprecision::mpz_int fibonacci_z5_mpz(unsigned int n);
+// boost::multiprecision::mpz_int fibonacci_binet_mpf(unsigned int n);
+
+template<typename T, typename U, typename V>
+U fibonacci_binet(const V& n)
+{
+    // first we compute how many digits we need
+    T est_phi = (1+sqrt((T{5})))/2;
+    T est_digits = n * log(est_phi)/log(10);
+    T::default_precision(round(est_digits).template convert_to<V>());
+    // now we compute the result
+    T a = 5;
+    T phi = (1+sqrt(a))/2;
+    T psi = (1-sqrt(a))/2;
+    T result = (pow(phi, n) - pow(psi, n))/sqrt(a);
+    return round(result).template convert_to<U>();
+}
+
 
 template<typename T, typename U>
 T fibonacci_z5(const U& n)
