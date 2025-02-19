@@ -18,7 +18,7 @@ jobs:
       - name: Install Boost
         run: sudo apt-get -y install libboost-dev
       - name: Install math libraries
-        run: sudo apt-get -y install libtommath-dev
+        run: sudo apt-get -y install libgmp-dev libmpfr-dev libtommath-dev
       - name: autoreconf
         run: autoreconf -vfi
       - name: configure
