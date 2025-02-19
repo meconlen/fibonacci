@@ -21,6 +21,7 @@ AC_CHECK_HEADERS([gtest/gtest.h], [], [AC_MSG_ERROR([Google Test not installed])
 AC_CHECK_HEADERS([benchmark/benchmark.h], [], [AC_MSG_ERROR([Google Benchmark not installed])])
 AC_CHECK_HEADERS([boost/multiprecision/cpp_int.hpp], [AC_MSG_RESULT([Found Boost Multiprecision headers])], [AC_MSG_ERROR([Boost Multiprecision Libraries not installed])])
 AC_CHECK_HEADERS([gmp.h], [], [AC_MSG_ERROR([GMP headers not found])])
+AC_CHECK_HEADERS([tommath.h], [], [AC_MSG_ERROR([Lib Tommath headers not found])])
 AC_LANG_POP
 
 AC_FUNC_MALLOC
@@ -33,7 +34,8 @@ AC_CHECK_FUNCS([fstat])
 AC_SEARCH_LIBS([DeleteThreadLocalValue], [gtest], [], 
     AC_MSG_WARN([libgtest (Google C++ Unit Testing Framework) is not installed.]))
 AC_SEARCH_LIBS([pthread_create], [pthread])
-AC_SEARCH_LIBS([__gmpz_init], [gmp], [], [AC_MSG_ERROR([GMP library not found])])
+AC_SEARCH_LIBS([__gmpz_init], [gmp], [], [AC_MSG_WARN([GMP library not found])])
+AC_SEARCH_LIBS([mp_add], [tommath], [], [AC_MSG_WARN([Lib TomMath library not found])])
 AC_CONFIG_FILES([Makefile
 	src/Makefile
 ])
