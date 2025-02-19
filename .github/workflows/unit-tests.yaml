@@ -17,6 +17,8 @@ jobs:
         run: sudo apt-get -y install libgtest-dev libbenchmark-dev
       - name: Install Boost
         run: sudo apt-get -y install libboost-dev
+      - name: Install math libraries
+        run: sudo apt-get -y install libtommath-dev
       - name: autoreconf
         run: autoreconf -vfi
       - name: configure
