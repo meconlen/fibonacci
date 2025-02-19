@@ -6,6 +6,8 @@
 #include <boost/multiprecision/gmp.hpp>
 #include <boost/multiprecision/tommath.hpp>
 
+#include <boost/multiprecision/mpfr.hpp>
+
 #include "fibonacci.hpp"
 #include "fibonacci_test_data.hpp"
 #include "quadratic.hpp"
@@ -86,24 +88,6 @@ TEST(fibonacci, iterative_tom_int)
 }
 #endif // HAVE_TOMMATH_H
 
-// TEST(fibonacci, iterative)
-// {
-//     unsigned int n = 100000;
-//     mpz_int fn = fibonacci_iterative_mpz(n);
-//     EXPECT_EQ(fn, F_100000_mpz);
-// 	return;
-// }
-
-// TEST(fibonacci, matrix_pow)
-// {
-//     unsigned int n = 100000;
-//     mpz_int fn = fibonacci_matrix_pow_mpz(n);
-//     EXPECT_EQ(fn, F_100000_mpz);
-// 	return;
-// }
-
-
-
 
 TEST(fibonacci, matrix_pow_uint64_t)
 {
@@ -142,17 +126,6 @@ TEST(fibonacci, matrix_pow_tom_int)
 	return;
 }
 #endif // HAVE_TOMMATH_H
-
-// TEST(fibonacci, fibonacci_fast_doubling_memoized_mpz)
-// {
-//     unsigned int n = 100000;
-//     mpz_int fn = fibonacci_fast_doubling_memoized_mpz(n);
-//     EXPECT_EQ(fn, F_100000_mpz);
-// 	return;
-// }
-
-
-
 
 TEST(fibonacci, fibonacci_fast_doubling_uint64_t)
 {
@@ -278,13 +251,23 @@ TEST(fibonacci, fibonacci_fast_quad_odd)
 }
 #endif 
 
-TEST(fibonacci, fibonacci_binet)
+#ifdef HAVE_GMP_H
+TEST(fibonacci, fibonacci_binet_mpfr)
+{
+    unsigned int n = 100000;
+    mpz_int fn = fibonacci_binet<mpfr_float, mpz_int, unsigned int>(n);
+    EXPECT_EQ(fn, F_100000_mpz);
+	return;
+}
+
+TEST(fibonacci, fibonacci_binet_mpf)
 {
     unsigned int n = 100000;
     mpz_int fn = fibonacci_binet<mpf_float, mpz_int, unsigned int>(n);
     EXPECT_EQ(fn, F_100000_mpz);
 	return;
 }
+#endif // HAVE_GMP_H
 
 #ifdef HAVE_GMP_H
 TEST(fibonacci, fibonacci_z5)

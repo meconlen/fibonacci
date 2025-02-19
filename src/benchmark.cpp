@@ -2,6 +2,8 @@
 #include <boost/multiprecision/gmp.hpp>
 #include <boost/multiprecision/tommath.hpp>
 
+#include <boost/multiprecision/mpfr.hpp>
+
 #include <benchmark/benchmark.h>
 #include "fibonacci.hpp"
 
@@ -85,45 +87,6 @@ static void BM_FIBONACCI_ITERATIVE_TOM(benchmark::State& state) {
 }
 BENCHMARK(BM_FIBONACCI_ITERATIVE_TOM);
 #endif 
-
-// static void BM_FIBONACCI_MATRIX_POW_MPZ(benchmark::State& state) {
-//     unsigned int n = 100000;
-
-//     for (auto _ : state) {
-//         mpz_int fn = fibonacci_matrix_pow_mpz(n);
-//     }
-// }
-// BENCHMARK(BM_FIBONACCI_MATRIX_POW_MPZ);
-
-#ifdef HAVE_BOOST_MULTIPRECISION_CPP_INT_HPP
-static void BM_FIBONACCI_MATRIX_POW_CPP(benchmark::State& state) {
-    unsigned int n = 100000;
-    for (auto _ : state) {
-        cpp_int fn = fibonacci_matrix_pow<cpp_int>(n);
-    }
-}
-BENCHMARK(BM_FIBONACCI_MATRIX_POW_CPP);
-#endif
-
-#ifdef HAVE_GMP_H
-static void BM_FIBONACCI_MATRIX_POW_MPZ(benchmark::State& state) {
-    unsigned int n = 100000;
-    for (auto _ : state) {
-        mpz_int fn = fibonacci_matrix_pow<mpz_int>(n);
-    }
-}
-BENCHMARK(BM_FIBONACCI_MATRIX_POW_MPZ);
-#endif
-
-#ifdef HAVE_TOMMATH_H
-static void BM_FIBONACCI_MATRIX_POW_TOM(benchmark::State& state) {
-    unsigned int n = 100000;
-    for (auto _ : state) {
-        tom_int fn = fibonacci_matrix_pow<tom_int>(n);
-    }
-}
-BENCHMARK(BM_FIBONACCI_MATRIX_POW_TOM);
-#endif
 
 #ifdef HAVE_BOOST_MULTIPRECISION_CPP_INT_HPP
 static void BM_FIBONACCI_MATRIX_POW_CPP_20000000(benchmark::State& state) {
@@ -236,7 +199,7 @@ BENCHMARK(BM_FIBONACCI_FAST_QUAD_TOM_20000000);
 #endif // HAVE_TOMMATH_H
 
 #ifdef HAVE_GMP_H
-static void BM_FIBONACCI_BINET_GMP_20000000(benchmark::State& state) {
+static void BM_FIBONACCI_BINET_MPF_20000000(benchmark::State& state) {
     unsigned int n = 20000000;
     mpz_int result = 0;
     for (auto _ : state) {
@@ -244,7 +207,19 @@ static void BM_FIBONACCI_BINET_GMP_20000000(benchmark::State& state) {
         result = fn;
     }
 }
-BENCHMARK(BM_FIBONACCI_BINET_GMP_20000000);
+BENCHMARK(BM_FIBONACCI_BINET_MPF_20000000);
+
+static void BM_FIBONACCI_BINET_MPFR_20000000(benchmark::State& state) {
+    unsigned int n = 20000000;
+    mpz_int result = 0;
+    for (auto _ : state) {
+        mpz_int fn = fibonacci_binet<mpfr_float, mpz_int, unsigned int>(n);
+        result = fn;
+    }
+}
+BENCHMARK(BM_FIBONACCI_BINET_MPFR_20000000);
+
+
 #endif 
 
 #ifdef HAVE_GMP_H

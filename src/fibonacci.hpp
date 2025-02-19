@@ -227,7 +227,15 @@ T fibonacci_fast_quad(U n)
     return util::fast_quad_impl<T, U>(n).first;
 }
 
-// boost::multiprecision::mpz_int fibonacci_binet_mpf(unsigned int n);
+// NB: fibonacci_binet() requires T::default_precision() which fixes the precision at run time
+// to use fixed precision we would need to instantiate the template with either the precision 
+// or n, which would be used to compute the precision at compile time. 
+
+// Alteratively we could declare some types of various magnitudes and select the smallest
+// acceptable magnitude. 
+
+// if we wanted to use this with other types which can fix the precision at runtime we could 
+// build something which allows us to define the function which sets the precision
 
 template<typename T, typename U, typename V>
 U fibonacci_binet(const V& n)
@@ -235,7 +243,8 @@ U fibonacci_binet(const V& n)
     // first we compute how many digits we need
     T est_phi = (1+sqrt((T{5})))/2;
     T est_digits = n * log(est_phi)/log(10);
-    T::default_precision(round(est_digits).template convert_to<V>());
+    // NB: we include some padding in the precision. MPFR requires this 
+    T::default_precision(round(est_digits).template convert_to<V>() + 2);
     // now we compute the result
     T a = 5;
     T phi = (1+sqrt(a))/2;
