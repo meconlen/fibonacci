@@ -19,7 +19,7 @@ private:
     T a{0}, b{0};
 
 public:
-    quadratic_integer(T x, T y) : a{x}, b{y} {};
+    quadratic_integer(T x, T y) : a{x}, b{y} {}
     template<typename U>
     constexpr quadratic_integer(U x) : a{x}, b{0} {}
 
@@ -32,8 +32,8 @@ public:
     constexpr quadratic_integer<D, T>& operator-=(const quadratic_integer<D, T>& other);
     constexpr quadratic_integer<D, T>& operator*=(const quadratic_integer<D, T>& other);
 
-    T integer_coefficient() { return a; }
-    T radical_coefficient() { return b; }
+    T integer_coefficient() const { return a; }
+    T radical_coefficient() const { return b; }
     template<uint64_t E, typename U>
     friend constexpr bool operator==(const quadratic_integer<E, U>& lhs, const quadratic_integer<E, U>& rhs);
 
