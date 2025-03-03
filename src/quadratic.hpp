@@ -56,7 +56,7 @@ public:
     friend constexpr quadratic_integer<E, U> operator*(const quadratic_integer<E, U>& lhs, const quadratic_integer<E, U>& rhs);
 
     template<uint64_t E, typename U, typename V>
-    friend quadratic_integer<E, U> operator/(const quadratic_integer<E, U>& lhs, const V& rhs);
+    friend constexpr quadratic_integer<E, U> operator/(const quadratic_integer<E, U>& lhs, const V& rhs);
 };
 
 template<uint64_t D, typename T>
@@ -145,7 +145,7 @@ constexpr quadratic_integer<E, U> operator*(const quadratic_integer<E, U>& lhs, 
 }
 
 template<uint64_t E, typename U, typename V>
-quadratic_integer<E, U> operator/(const quadratic_integer<E, U>& lhs, const V& rhs)
+constexpr quadratic_integer<E, U> operator/(const quadratic_integer<E, U>& lhs, const V& rhs)
 {
     return quadratic_integer<E, U>(lhs.a / rhs, lhs.b / rhs);
 }
