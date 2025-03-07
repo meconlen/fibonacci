@@ -6,6 +6,7 @@
 
 #include <benchmark/benchmark.h>
 #include "fibonacci.hpp"
+#include "profile_integer.hpp"
 
 #include "../config.h"
 
@@ -290,4 +291,35 @@ static void BM_MATRIX_POW_TOM(benchmark::State& state) {
 }
 BENCHMARK(BM_MATRIX_POW_TOM);
 #endif // HAVE_TOMMATH_H
+
+#ifdef HAVE_GMP_H
+static void BM_FIBONACCI_FAST_DOUBLING_PROFILE_20000000(benchmark::State& state) {
+    unsigned int n = 20000000;
+    profile_integer::profile_integer<mpz_int> fn;
+    for (auto _ : state) {
+        fn = fibonacci_fast_doubling<profile_integer::profile_integer<mpz_int>>(n);
+    }
+auto counts = fn.get_product_counts();
+for(auto [k, v] : counts) {
+    std::cout << "{" << k << ", " << v << "}" << std::endl;
+}
+}
+BENCHMARK(BM_FIBONACCI_FAST_DOUBLING_PROFILE_20000000);
+
+static void BM_FIBONACCI_FAST_QUAD_PROFILE_20000000(benchmark::State& state) {
+    unsigned int n = 20000000;
+    profile_integer::profile_integer<mpz_int> fn;
+    for (auto _ : state) {
+        fn = fibonacci_fast_quad<profile_integer::profile_integer<mpz_int>>(n);
+    }
+auto counts = fn.get_product_counts();
+for(auto [k, v] : counts) {
+    std::cout << "{" << k << ", " << v << "}" << std::endl;
+}
+}
+BENCHMARK(BM_FIBONACCI_FAST_QUAD_PROFILE_20000000);
+
+#endif // HAVE_GMP_H
+
+
 BENCHMARK_MAIN();

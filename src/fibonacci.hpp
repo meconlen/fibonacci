@@ -22,9 +22,11 @@ namespace util {
     {
         if(n == 0) return {0, 1};
         if(n == 1) return {1, 1};
+        if(n == 2) return {1, 2};
+        if(n == 3) return {2, 3};
         U k = ( n % 2 == 0 ? n/(U)2 : (n-(U)1)/(U)2 );
         auto [f_k, f_k_1] = fast_doubling_impl<T, U>(k);
-        T f_n = f_k * (2*f_k_1 - f_k);
+        T f_n = f_k * (T{2}*f_k_1 - f_k);
         T f_n_1 =  f_k_1*f_k_1 + f_k * f_k;
 
         if(n % 2 == 0) {
@@ -60,23 +62,23 @@ namespace util {
 
         if(n % 4 == 0) {
             T D = C-A;
-            T f_n = (2*A-B)*(2*D+3*B);
-            T f_n_1 = B*(4*D+B)+E*E;
+            T f_n = (T{2}*A-B)*(T{2}*D+T{3}*B);
+            T f_n_1 = B*(T{4}*D+B)+E*E;
             return {f_n, f_n_1};
         }
         if(n % 4 == 1) {
-            T f_n = B*(4*(C-A)+B)+E*E;
-            T f_n_1 = (C+4*A-B)*E;
+            T f_n = B*(T{4}*(C-A)+B)+E*E;
+            T f_n_1 = (C+T{4}*A-B)*E;
             return {f_n, f_n_1};
         }
         if(n % 4 == 2) {
-            T f_n = (C+4*A-B)*E;
-            T f_n_1 = C*(C+4*(A+B))+E*E;
+            T f_n = (C+T{4}*A-B)*E;
+            T f_n_1 = C*(C+T{4}*(A+B))+E*E;
             return {f_n, f_n_1};
         }
         if(n % 4 == 3) {
-            T f_n = (C+4*A-B)*E;
-            T f_n_1 = C*(C+4*(A+B))+E*E;
+            T f_n = (C+T{4}*A-B)*E;
+            T f_n_1 = C*(C+T{4}*(A+B))+E*E;
             return {f_n_1, f_n + f_n_1};
         }
         return {0, 1};
@@ -161,8 +163,6 @@ T fibonacci_matrix_pow(unsigned int n)
 }
 
 
-// boost::multiprecision::mpz_int fibonacci_matrix_pow_square_mpz(unsigned int n);
-// boost::multiprecision::mpz_int fibonacci_fast_doubling_memoized_mpz(unsigned int n);
 boost::multiprecision::mpz_int fibonacci_fast_doubling_recursive_mpz(unsigned int n);
 
 template<typename T, typename U = unsigned int>
@@ -174,7 +174,7 @@ T fibonacci_fast_doubling(U n)
     auto [f_k, f_k_1] = util::fast_doubling_impl<T, U>(k);
 
     if(n % 2 == 0) {
-        T f_n = f_k * (2*f_k_1 - f_k);
+        T f_n = f_k * (T{2}*f_k_1 - f_k);
         return f_n;
     } else {
         T f_n_1 =  f_k_1*f_k_1 + f_k * f_k;;
@@ -207,21 +207,21 @@ T fibonacci_fast_quad(U n)
     T C = f_k_1*f_k_1;
 
     if(n % 4 == 0) {
-        T f_n = (2*A-B)*(2*(C-A)+3*B);
+        T f_n = (T{2}*A-B)*(T{2}*(C-A)+T{3}*B);
         return f_n;
     }
     if(n % 4 == 1) {
         T E = B+C;
-        T f_n = B*(4*(C-A)+B)+E*E;
+        T f_n = B*(T{4}*(C-A)+B)+E*E;
         return f_n;
     }
     if(n % 4 == 2) {
-        T f_n = (C+4*A-B)*(B+C);
+        T f_n = (C+T{4}*A-B)*(B+C);
         return f_n;
     }
     if(n % 4 == 3) {
         T E = B+C;
-        T f_n_1 = C*(C+4*(A+B))+E*E;
+        T f_n_1 = C*(C+T{4}*(A+B))+E*E;
         return f_n_1;
     }
     return util::fast_quad_impl<T, U>(n).first;

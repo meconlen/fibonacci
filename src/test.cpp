@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <iostream>
+#include <map>
 
 #include <boost/multiprecision/cpp_int.hpp>
 #include <boost/multiprecision/gmp.hpp>
@@ -10,6 +11,7 @@
 
 #include "fibonacci.hpp"
 #include "fibonacci_test_data.hpp"
+#include "profile_integer.hpp"
 #include "quadratic.hpp"
 
 #include "../config.h"
@@ -315,6 +317,7 @@ TEST(quadratic, to_string)
     EXPECT_EQ(q.to_string(), "1 + 1 sqrt(5)");
 }
 
+#ifdef HAVE_GMP_H
 TEST(quadratic, constructor)
 {
     quadratic_integer<5, mpz_int> q((int)1, (unsigned int)1);
@@ -418,6 +421,139 @@ TEST(quadratic, pow)
     quadratic_integer<5, mpz_int> expected_5(1, -1);
     EXPECT_EQ(pow(psi, 1), expected_5);
 }
+
+TEST(profile_integer, string)
+{
+    profile_integer::profile_integer<mpz_int> x(1);
+    std::string output = x.to_string();
+    EXPECT_EQ(output, "1");
+}
+
+TEST(profile_integer, get_value)
+{
+    profile_integer::profile_integer<mpz_int> x(5);
+    EXPECT_EQ(x.get_value(), mpz_int{5});
+    std::map<std::size_t, std::size_t> expected{};
+    EXPECT_EQ(x.get_product_counts(), expected);
+}
+
+TEST(profile_integer, operator_plus_equal)
+{
+    profile_integer::profile_integer<mpz_int> x(1);
+    profile_integer::profile_integer<mpz_int> y(2);
+    x+=y;
+    EXPECT_EQ(x.get_value(), mpz_int{3});
+}
+
+TEST(profile_integer, operator_minus_equal)
+{
+    profile_integer::profile_integer<mpz_int> x(1);
+    profile_integer::profile_integer<mpz_int> y(2);
+    x-=y;
+    EXPECT_EQ(x.get_value(), mpz_int{-1});
+}
+
+TEST(profile_integer, operator_times_equal)
+{
+    profile_integer::profile_integer<mpz_int> x(2);
+    profile_integer::profile_integer<mpz_int> y(2);
+    x*=y;
+    EXPECT_EQ(x.get_value(), mpz_int{4});
+    std::map<std::size_t, std::size_t> expected_counts{{1, 1}};
+    EXPECT_EQ(x.get_product_counts(), expected_counts);
+}
+
+TEST(profile_integer, operator_equal_equal)
+{
+    profile_integer::profile_integer<mpz_int> x(2);
+    profile_integer::profile_integer<mpz_int> y(2);
+    x*=y;
+    profile_integer::profile_integer<mpz_int> z(4);
+    EXPECT_EQ(x == z, true);
+    EXPECT_EQ(x == y, false);
+}
+
+TEST(profile_integer, operator_not_equal)
+{
+    profile_integer::profile_integer<mpz_int> x(2);
+    profile_integer::profile_integer<mpz_int> z(4);
+    EXPECT_EQ(x != z, true);
+    EXPECT_EQ(x != x, false);
+}
+
+TEST(profile_integer, operator_unary_plus)
+{
+    profile_integer::profile_integer<mpz_int> x{2};
+    EXPECT_EQ(+x, x);
+}
+
+TEST(profile_integer, operator_unary_minus)
+{
+    profile_integer::profile_integer<mpz_int> x{2};
+    profile_integer::profile_integer<mpz_int> y{-2};
+    EXPECT_EQ(-x, y);
+}
+
+TEST(profile_integer, operator_plus)
+{
+    profile_integer::profile_integer<mpz_int> x{2};
+    x*=x;
+    profile_integer::profile_integer<mpz_int> y{2};
+    profile_integer::profile_integer<mpz_int> expected{6};
+    profile_integer::profile_integer<mpz_int> z = x+y;
+    EXPECT_EQ(z.get_value(), expected.get_value());
+    std::map<std::size_t, std::size_t> expected_counts{{1, 1}};
+    EXPECT_EQ(z.get_product_counts(), expected_counts);
+}
+
+TEST(profile_integer, operator_minus)
+{
+    profile_integer::profile_integer<mpz_int> x{2};
+    x*=x;
+    profile_integer::profile_integer<mpz_int> y{1};
+    profile_integer::profile_integer<mpz_int> expected{3};
+    profile_integer::profile_integer<mpz_int> z = x-y;
+    EXPECT_EQ(z.get_value(), expected.get_value());
+    std::map<std::size_t, std::size_t> expected_counts{{1, 1}};
+    EXPECT_EQ(z.get_product_counts(), expected_counts);
+}
+
+TEST(profile_integer, operator_times)
+{
+    profile_integer::profile_integer<mpz_int> x{2};
+    profile_integer::profile_integer<mpz_int> y{2};
+    profile_integer::profile_integer<mpz_int> expected{4};
+    profile_integer::profile_integer<mpz_int> z = x*y;
+    EXPECT_EQ(z.get_value(), expected.get_value());
+    std::map<std::size_t, std::size_t> expected_counts{{1, 1}};
+    EXPECT_EQ(z.get_product_counts(), expected_counts);
+}
+
+TEST(profile_integer, operator_divide)
+{
+    profile_integer::profile_integer<mpz_int> x{2};
+    x*=x;
+    profile_integer::profile_integer<mpz_int> y{2};
+    profile_integer::profile_integer<mpz_int> z = x/y;
+    profile_integer::profile_integer<mpz_int> expected{2};
+    EXPECT_EQ(z.get_value(), expected.get_value());
+    std::map<std::size_t, std::size_t> expected_counts{{1, 1}};
+    EXPECT_EQ(z.get_product_counts(), expected_counts);
+}
+
+TEST(profile_integer, product_counts)
+{
+    profile_integer::profile_integer<mpz_int> x{2};
+    for(int i = 0; i < 7; i++) {
+        x*=x;
+    }
+    std::map<std::size_t, std::size_t> expected_counts{{1, 6}, {2, 1}};
+    EXPECT_EQ(x.get_product_counts(), expected_counts);
+
+}
+
+#endif // HAVE_GMP_H
+
 #endif
 
 int main(int argc, char **argv) {
