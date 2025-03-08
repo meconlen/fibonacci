@@ -1,5 +1,6 @@
-bin_PROGRAMS = test benchmark
+bin_PROGRAMS = test benchmark minimal
 
+minimal_SOURCES = minimal.cpp
 benchmark_SOURCES = benchmark.cpp 
 # I would love for this to be found by configure but you try getting autoconf to find C++ only libraries 
 # we depend on finding the header file there

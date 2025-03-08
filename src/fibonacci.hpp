@@ -26,7 +26,7 @@ namespace util {
         if(n == 3) return {2, 3};
         U k = ( n % 2 == 0 ? n/(U)2 : (n-(U)1)/(U)2 );
         auto [f_k, f_k_1] = fast_doubling_impl<T, U>(k);
-        T f_n = f_k * (T{2}*f_k_1 - f_k);
+        T f_n = f_k * (2*f_k_1 - f_k);
         T f_n_1 =  f_k_1*f_k_1 + f_k * f_k;
 
         if(n % 2 == 0) {
