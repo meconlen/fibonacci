@@ -299,10 +299,7 @@ static void BM_FIBONACCI_FAST_DOUBLING_PROFILE_20000000(benchmark::State& state)
     for (auto _ : state) {
         fn = fibonacci_fast_doubling<profile_integer::profile_integer<mpz_int>>(n);
     }
-auto counts = fn.get_product_counts();
-for(auto [k, v] : counts) {
-    std::cout << "{" << k << ", " << v << "}" << std::endl;
-}
+    profile_integer::profile_integer<mpz_int>::reset_counts();
 }
 BENCHMARK(BM_FIBONACCI_FAST_DOUBLING_PROFILE_20000000);
 
@@ -312,10 +309,7 @@ static void BM_FIBONACCI_FAST_QUAD_PROFILE_20000000(benchmark::State& state) {
     for (auto _ : state) {
         fn = fibonacci_fast_quad<profile_integer::profile_integer<mpz_int>>(n);
     }
-auto counts = fn.get_product_counts();
-for(auto [k, v] : counts) {
-    std::cout << "{" << k << ", " << v << "}" << std::endl;
-}
+    fn.reset_counts();
 }
 BENCHMARK(BM_FIBONACCI_FAST_QUAD_PROFILE_20000000);
 

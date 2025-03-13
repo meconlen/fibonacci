@@ -38,17 +38,19 @@ template<typename T, typename U>
 constexpr profile_integer<T, U> operator*(const profile_integer<T, U>& lhs, const profile_integer<T, U>& rhs);
 
 template<typename T, typename U, typename V>
-constexpr typename std::enable_if<! std::is_same<profile_integer<T, U>, V>::value, profile_integer<T, U>>::type operator*(const V& lhs, const profile_integer<T, U>& rhs);
+typename std::enable_if<! std::is_same<profile_integer<T, U>, V>::value, profile_integer<T, U>>::type operator*(const V& lhs, const profile_integer<T, U>& rhs);
 
 template<typename T, typename U>
 constexpr profile_integer<T, U> operator/(const profile_integer<T, U>& lhs, const profile_integer<T, U>& rhs);
+
+std::size_t get_limb_count(const boost::multiprecision::mpz_int& x);
 
 template<typename T, typename U = std::size_t>
 class profile_integer 
 {
 private:
-   T value; 
-   std::map<U, U> product_counts{};
+   T value{}; 
+   static std::map<U, U> product_counts;
 
 public:
    profile_integer() : value{0} {}
@@ -56,6 +58,8 @@ public:
    template<typename V>
    constexpr profile_integer(V x) : value{x} {}
 
+
+   static void reset_counts();
    // self operators
 
    constexpr profile_integer<T, U>& operator+=(const profile_integer<T, U>& other);
@@ -77,31 +81,41 @@ public:
 
    friend constexpr profile_integer<T, U> operator+<T, U>(const profile_integer<T, U>& lhs, const profile_integer<T, U>& rhs);
    friend constexpr profile_integer<T, U> operator-<T, U>(const profile_integer<T, U>& lhs, const profile_integer<T, U>& rhs);
-   friend constexpr profile_integer<T, U> operator*<T, U>(const profile_integer<T, U>& lhs, const profile_integer<T, U>& rhs);
+   friend constexpr profile_integer<T, U> operator*<>(const profile_integer<T, U>& lhs, const profile_integer<T, U>& rhs);
+
+   // according to 13.7.4(8) this may not be a constexpr
 
    template<typename V> 
-   friend constexpr typename std::enable_if<! std::is_same<profile_integer<T, U>, V>::value, profile_integer<T, U>>::type operator*(const V& lhs, const profile_integer<T, U>& rhs);
+   friend typename std::enable_if_t<! std::is_same_v<profile_integer<T, U>, V>, profile_integer<T, U>> operator*(const V& lhs, const profile_integer<T, U>& rhs)
+   {
+      profile_integer<T, U> x;
+      x.value = rhs.value * lhs;
+      x.product_counts = rhs.product_counts;
+      x.product_counts[get_limb_count(rhs.value)]++;
+      return x;
+   }
 
    friend constexpr profile_integer<T, U> operator/<T, U>(const profile_integer<T, U>& lhs, const profile_integer<T, U>& rhs);
 
    std::string to_string() const;
+   std::string counts_to_string() const;
    T get_value() const;
    std::map<U, U> get_product_counts() const;
 };
 
-template<typename U>
-void merge_counts(std::map<U, U>& lhs, const std::map<U, U>& rhs)
+template<typename T, typename U>
+std::map<U, U> profile_integer<T, U>::product_counts{};
+
+template<typename T, typename U>
+void profile_integer<T, U>::reset_counts()
 {
-   for(const auto& [key, value] : rhs) {
-      lhs[key] += value;
-   }
+   product_counts.clear();
 }
 
 template<typename T, typename U>
 constexpr profile_integer<T, U>& profile_integer<T, U>::operator+=(const profile_integer<T, U>& other)
 {
    value += other.value;
-   merge_counts(product_counts, other.product_counts);
    return *this;
 }
 
@@ -109,7 +123,6 @@ template<typename T, typename U>
 constexpr profile_integer<T, U>& profile_integer<T, U>::operator-=(const profile_integer<T, U>& other)
 {
    value -= other.value;
-   merge_counts(product_counts, other.product_counts);
    return *this;
 }
 
@@ -157,7 +170,6 @@ constexpr profile_integer<T, U> operator-(const profile_integer<T, U>& unary_val
 {
    profile_integer<T, U> x;
    x.value = -unary_value.value;
-   x.product_counts = unary_value.product_counts;
    return x;
 }
 
@@ -166,8 +178,6 @@ constexpr profile_integer<T, U> operator+(const profile_integer<T, U>& lhs, cons
 {
    profile_integer<T, U> x;
    x.value = lhs.value + rhs.value;
-   x.product_counts = lhs.product_counts;
-   merge_counts(x.product_counts, rhs.product_counts);
    return x;
 }
 
@@ -176,8 +186,6 @@ constexpr profile_integer<T, U> operator-(const profile_integer<T, U>& lhs, cons
 {
    profile_integer<T, U> x;
    x.value = lhs.value - rhs.value;
-   x.product_counts = lhs.product_counts;
-   merge_counts(x.product_counts, rhs.product_counts);
    return x;
 }
 
@@ -186,20 +194,8 @@ constexpr profile_integer<T, U> operator*(const profile_integer<T, U>& lhs, cons
 {
    profile_integer<T, U> x;
    x.value = lhs.value * rhs.value;
-   x.product_counts = lhs.product_counts;
-   merge_counts(x.product_counts, rhs.product_counts);
    T max = lhs.value > rhs.value ? lhs.value : rhs.value;
    x.product_counts[get_limb_count(max)]++;
-   return x;
-}
-
-template<typename T, typename U, typename V> 
-constexpr typename std::enable_if< ! std::is_same<profile_integer<T, U>, V>::value , profile_integer<T, U> >::type operator*(const V& lhs, const profile_integer<T, U>& rhs)
-{
-   profile_integer<T, U> x;
-   x.value = rhs.value * lhs;
-   x.product_counts = rhs.product_counts;
-   x.product_counts[get_limb_count(rhs.value)]++;
    return x;
 }
 
@@ -208,8 +204,6 @@ constexpr profile_integer<T, U> operator/(const profile_integer<T, U>& lhs, cons
 {
    profile_integer<T, U> x;
    x.value = lhs.value / rhs.value;
-   x.product_counts = lhs.product_counts;
-   merge_counts(x.product_counts, rhs.product_counts);
    return x;
 }
 
@@ -218,6 +212,16 @@ std::string profile_integer<T, U>::to_string() const
 {
    std::ostringstream oss;
    oss << value;
+   return oss.str();
+}
+
+template<typename T, typename U>
+std::string profile_integer<T, U>::counts_to_string() const
+{
+   std::ostringstream oss;
+   for(const auto& [k, v] : product_counts) {
+      oss << "{" << k << ", " << v << "} -> " << log2(static_cast<double>(v)) << std::endl;
+   }
    return oss.str();
 }
 

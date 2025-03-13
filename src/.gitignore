@@ -4,3 +4,4 @@ test-suite.log
 test.log
 test.trs
 benchmark
+profile

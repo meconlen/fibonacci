@@ -1,10 +1,10 @@
-bin_PROGRAMS = test benchmark minimal
+bin_PROGRAMS = test benchmark profile
 
-minimal_SOURCES = minimal.cpp
 benchmark_SOURCES = benchmark.cpp 
-# I would love for this to be found by configure but you try getting autoconf to find C++ only libraries 
-# we depend on finding the header file there
 benchmark_LDADD = -lbenchmark
+
+profile_SOURCES = profile.cpp
+
 test_SOURCES = test.cpp fibonacci_test_data.cpp
 TESTS = test
 

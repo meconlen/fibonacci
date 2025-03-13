@@ -11,6 +11,7 @@
 #include <utility>
 
 #include "quadratic.hpp"
+#include "profile_integer.hpp"
 
 // NB: we will index the sequence at 0 so F_0 = 0, F_1 = 1
 
@@ -24,6 +25,7 @@ namespace util {
         if(n == 1) return {1, 1};
         if(n == 2) return {1, 2};
         if(n == 3) return {2, 3};
+        if(n == 4) return {3, 5};
         U k = ( n % 2 == 0 ? n/(U)2 : (n-(U)1)/(U)2 );
         auto [f_k, f_k_1] = fast_doubling_impl<T, U>(k);
         T f_n = f_k * (2*f_k_1 - f_k);
@@ -36,8 +38,6 @@ namespace util {
         }
     }
 
-    // std::pair<boost::multiprecision::mpz_int, boost::multiprecision::mpz_int> fast_quad_mpz_impl(const boost::multiprecision::mpz_int &n);
-
     template<typename T, typename U>
     std::pair<T, T> fast_quad_impl(const U &n)
     {
@@ -45,7 +45,7 @@ namespace util {
         if(n == 1) return {1, 1}; 
         if(n == 2) return {1, 2};
         if(n == 3) return {2, 3};
-
+        if(n == 4) return {3, 5};
         U k = 0;
         if(n % 4 == 0) k = n/(U) 4;
         if(n % 4 == 1) k = (n-(U)1)/(U)4;
@@ -96,8 +96,6 @@ namespace util {
         identity(1, 1) = 1;
         return identity;
     }
-
-    // boost::numeric::ublas::matrix<boost::multiprecision::mpz_int> matrix_pow(boost::multiprecision::mpz_int n);
 
     template<typename T, typename U>
     boost::numeric::ublas::matrix<T> matrix_pow(U n)
@@ -184,8 +182,6 @@ T fibonacci_fast_doubling(U n)
     return util::fast_doubling_impl<T, U>(n).first;
 }
 
-// boost::multiprecision::mpz_int fibonacci_fast_quad_recursive_mpz(unsigned int n);
-
 template<typename T, typename U>
 T fibonacci_fast_quad(U n)
 {
@@ -193,6 +189,7 @@ T fibonacci_fast_quad(U n)
     if(n == 1) return 1; 
     if(n == 2) return 1;
     if(n == 3) return 2;
+    if(n == 4) return 3;
 
     U k = 0;
     if(n % 4 == 0) k = n/4;
@@ -226,6 +223,7 @@ T fibonacci_fast_quad(U n)
     }
     return util::fast_quad_impl<T, U>(n).first;
 }
+
 
 // NB: fibonacci_binet() requires T::default_precision() which fixes the precision at run time
 // to use fixed precision we would need to instantiate the template with either the precision 
